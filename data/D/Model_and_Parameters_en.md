@@ -1,0 +1,9 @@
+# Model and Parameters
+
+The Singapore office scenario contains a 300 kW building load, 60 kWp rooftop photovoltaics, a 120 kWh/60 kW LFP battery, and five V2G slots, expandable to ten. Each slot represents a 40 kWh LEAF-reference battery connected through a nominal 6 kW bidirectional charger. Episodes span 48 half-hour intervals. Positive AC-bus power denotes charging; negative power denotes discharging. Continuous device actions are mapped into feasible intervals enforcing rated power, energy bounds, departure-target reachability, and an end-of-day rule that the battery finishes each day with at least its initial energy.
+
+Employees arrive around 08:30 and depart around 18:00 under assumed truncated-normal distributions. EV operating SoC is 20–90%, with a 65% departure minimum. Assumed one-way efficiencies are 0.90 for EVs and 0.95 for stationary storage. Four consecutive weeks of final EMC USEP observations supply electricity prices. Purchases include an assumed S$0.03/kWh adder; exports receive USEP. Office demand is synthetic, while rooftop output scales historical national solar forecasts; neither is claimed as measured building data.
+
+Contract capacity is 240 kW. The adopted SP HT-Small uncontracted-capacity benchmark, S$21.32/kW/month, is divided by 30 and charged through incremental daily peaks. Derived throughput coefficients are S$0.04395/kWh for BESS and S$0.03118/kWh for EVs. Fixed photovoltaic and contracted-capacity charges enter reported totals. C implements the offline MILP reference using identical constraints and settlement.
+
+Source references: [S01–S10 and explicit assumptions](D_model_and_parameters.md#9-来源与假设登记). Numerical values are scenario choices or transferred benchmarks as identified in the accompanying parameter table; they are not a calibrated site model.

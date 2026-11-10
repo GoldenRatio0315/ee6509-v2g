@@ -1,0 +1,78 @@
+{
+  "version": "0.2",
+  "source_id": "S01",
+  "downloaded_date_local": "2026-11-10",
+  "source_file": "sources/emc_usep_2026-10-01_2026-10-28.csv",
+  "csv_columns": [
+    "t",
+    "start_local",
+    "usep_sgd_per_kwh",
+    "load_kw",
+    "pv_kw"
+  ],
+  "days": 28,
+  "rows_per_day": 48,
+  "total_rows": 1344,
+  "provenance": {
+    "usep_sgd_per_kwh": "Actual publicly downloaded final EMC half-hour USEP, divided by 1000",
+    "load_kw": "Synthetic office shape and bounded noise, A07; not measured building load",
+    "pv_kw": "National EMC SOLAR forecast shape scaled to an assumed rooftop; S01/S10/A06; not measured rooftop generation"
+  },
+  "processing": {
+    "prices_filled_or_interpolated": false,
+    "price_spikes_clipped": false,
+    "solar_series_kind": "historical PSO forecast",
+    "load_rng": "Python random.Random(20261110 + day_offset)",
+    "pv_scale_kw_per_mw": 0.026832581462040282,
+    "pv_scale_note": "Fixed whole-block scenario calibration, not a fitted predictor. Frozen for every split."
+  },
+  "summary": {
+    "usep_min_sgd_per_kwh": 0.09803,
+    "usep_max_sgd_per_kwh": 4.46848,
+    "usep_mean_sgd_per_kwh": 0.36656707589285714,
+    "negative_price_rows": 0,
+    "load_max_kw": 300.0,
+    "pv_max_kw": 48.0,
+    "noon_load_min_all_days_kw": 139.064597,
+    "noon_load_min_weekdays_kw": 245.606769,
+    "pv_daily_mean_kwh": 253.30599914285713,
+    "no_storage_net_peak_kw": 292.53388800000005
+  },
+  "splits": {
+    "train": [
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-03",
+      "2026-10-04",
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08",
+      "2026-10-09",
+      "2026-10-10",
+      "2026-10-11",
+      "2026-10-12",
+      "2026-10-13",
+      "2026-10-14"
+    ],
+    "validation": [
+      "2026-10-15",
+      "2026-10-16",
+      "2026-10-17",
+      "2026-10-18",
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21"
+    ],
+    "test": [
+      "2026-10-22",
+      "2026-10-23",
+      "2026-10-24",
+      "2026-10-25",
+      "2026-10-26",
+      "2026-10-27",
+      "2026-10-28"
+    ]
+  },
+  "quality_note": "No source rows were filled. Real price spikes are retained. Other columns are explicitly documented model inputs; these are not co-measured office/PV observations."
+}

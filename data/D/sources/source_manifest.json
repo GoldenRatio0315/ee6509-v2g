@@ -1,0 +1,111 @@
+{
+  "accessed_date_local": "2026-11-10",
+  "timezone": "Asia/Singapore",
+  "sources": [
+    {
+      "id": "S01",
+      "title": "Energy Market Company, NEMS Prices: final USEP download",
+      "url": "https://www.nems.emcsg.com/nems-prices",
+      "location": "Market Data Download → Uniform Singapore Energy Price and Demand Forecast; 2026-10-01 through 2026-10-28; columns DATE, PERIOD, USEP ($/MWh), SOLAR(MW).",
+      "access": "web open + successful direct CSV download",
+      "download_url": "https://www.nems.emcsg.com/api/sitecore/DataSync/DataDownload?value=1&fromDate=2026-10-01&toDate=2026-10-28&tpcValue=1"
+    },
+    {
+      "id": "S02",
+      "title": "Mike Schooling / Indra, Sciurus webinar merged slides",
+      "url": "https://www.cenex.co.uk/app/uploads/2021/03/Merged-Slides-OVO-Indra-Nissan.pdf#page=27",
+      "location": "PDF p.27 (one-based), Indra’s Vehicle to Grid → Technical Specifications; 6 kW nominal charge/discharge.",
+      "access": "web PDF open and text lookup"
+    },
+    {
+      "id": "S03",
+      "title": "Nissan, 2023 LEAF Press Kit",
+      "url": "https://usa.nissannews.com/en-US/releases/2023-nissan-leaf-press-kit",
+      "location": "Choice of two powertrains; Specs → Mechanical and Platform → 40 kWh lithium-ion battery, 192 cells.",
+      "access": "web open and text lookup"
+    },
+    {
+      "id": "S04",
+      "title": "Schram et al., Empirical Evaluation of V2G Round-trip Efficiency, SEST 2020",
+      "url": "https://research-portal.uu.nl/en/publications/empirical-evaluation-of-v2g-round-trip-efficiency/",
+      "location": "Abstract; measured round-trip range 79.1–87.8%; DOI 10.1109/SEST48500.2020.9203459, proceedings pp.1–6. Only the public abstract was used.",
+      "access": "web open"
+    },
+    {
+      "id": "S05",
+      "title": "SP Group, Transmission Service Rate Schedule, effective 1 July 2026",
+      "url": "https://www.spgroup.com.sg/dam/jcr:ed6d35eb-7bb5-450c-8386-b61f0cc13142/Transmission%20Service%20Rate%20Schedule%20(effective%20from%201%20Jul%202026).pdf#page=7",
+      "location": "PDF p.7 Table 9 HT-Small excluding GST: contracted capacity 14.21, UCC 21.32 SGD/kW/month; p.8 notes 4/7; p.10 §3.1 contracted-capacity monthly charges; p.13 §3.5 UCC monthly maximum demand; p.14 §3.6 standby-capacity conditions. July version deliberately pinned.",
+      "access": "web PDF open + local PDF text extraction"
+    },
+    {
+      "id": "S06",
+      "title": "BloombergNEF, Lithium-Ion Battery Pack Prices See Largest Drop Since 2017, 10 Dec 2024",
+      "url": "https://about.bnef.com/insights/commodities/lithium-ion-battery-pack-prices-see-largest-drop-since-2017-falling-to-115-per-kilowatt-hour-bloombergnef/",
+      "location": "Paragraph beginning “The figures represent an average…”: BEV battery packs USD97/kWh in 2024.",
+      "access": "web open"
+    },
+    {
+      "id": "S07",
+      "title": "Viswanathan et al., 2022 Grid Energy Storage Technology Cost and Performance Assessment, PNNL-33283",
+      "url": "https://www.energy.gov/sites/default/files/2022-09/2022%20Grid%20Energy%20Storage%20Technology%20Cost%20and%20Performance%20Assessment.pdf#page=44",
+      "location": "Printed p.22 / PDF p.44, Table 4.3: LFP 2400 cycles at 80% average DoD; NMC 3000 at 70%. Printed pp.19–22 explain remaining-capacity/end-of-life convention. EV transfer is an explicit assumption.",
+      "access": "web PDF open + local download and page text extraction"
+    },
+    {
+      "id": "S08",
+      "title": "NREL, Winter 2025 Solar Industry Update, 4 Feb 2025",
+      "url": "https://docs.nlr.gov/docs/fy25osti/93310.pdf#page=36",
+      "location": "PDF/slide p.36, Average Stationary Storage Lithium-Ion Battery Pack Price, 2016–2024; 2024 total = USD125/kWh (2024 real dollars); chart source BloombergNEF 2024 survey.",
+      "access": "web PDF open + local download and p.36 extraction"
+    },
+    {
+      "id": "S09",
+      "title": "EMA, Factsheet on Accelerated Solar Deployment to Meet 3 GWp Solar Target by 2030",
+      "url": "https://isomer-user-content.by.gov.sg/166/7faca588-f437-4125-91ab-ef77246c66be/Factsheet%20on%20Accelerated%20Solar%20Deployment%20to%20Meet%203%20GWp%20Solar%20Target%20by%202030%20%5BPDF%2C%20236%20KB%5D.pdf",
+      "location": "Solar Information for Consumers → §2 Costs of installing solar → (a) Upfront Costs, SGD1000–1600/kWp; (b) Recurring Costs, residential O&M 1–2% annually. Web PDF extraction exposed headings but not page breaks, so section positions are cited.",
+      "access": "web PDF open; direct local download returned HTML and was NOT used"
+    },
+    {
+      "id": "S10",
+      "title": "EMC, Update on Service Enhancement in the NEMS",
+      "url": "https://www.home.emcsg.com/about-emc/media-news-annoucements/Announcements/Update-on-Service-Enhancement-in-the-NEMS",
+      "location": "Incorporation of solar generation forecasts in the Market Clearing Engine; PSO supplies solar forecasts to EMC for each dispatch period.",
+      "access": "web open"
+    },
+    {
+      "id": "S11",
+      "title": "Sub-hourly measurement datasets from 6 real buildings: Energy use and indoor climate",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10160339/",
+      "location": "§2.6 and Table 6: NTU Research Techno Plaza testbed office variables are temperature, humidity and supply air flow; not a whole-office electricity meter. Not used as load truth.",
+      "access": "web open; dataset suitability screening"
+    },
+    {
+      "id": "S12",
+      "title": "BUDS Lab, Building Data Genome 1 metadata",
+      "url": "https://raw.githubusercontent.com/buds-lab/the-building-data-genome-project/master/data/raw/meta_open.csv",
+      "location": "Rows with timezone=Asia/Singapore are schools/dormitory, not Office; Office timezones in this metadata are US/Europe. Not used to claim a Singapore office profile.",
+      "access": "download + CSV inspection"
+    },
+    {
+      "id": "S13",
+      "title": "EMA, Solar Irradiance Map",
+      "url": "https://www.ema.gov.sg/consumer-information/solar/solar-irradiance-map",
+      "location": "Solar irradiance map page; inspected as Singapore source, but no compatible historical rooftop AC-output block was obtained for these dates.",
+      "access": "web open; dataset suitability screening"
+    }
+  ],
+  "assumptions": {
+    "A01": "Current user-approved group specification; fixed formulas, 0.5 h, 48 steps, N=5–10, 12-step forecast, 20-year PV life and 30-day fee allocation. Group technical-plan file supplies the 8-step history and seed convention. Current user request takes precedence where they differ.",
+    "A02": "D v0.2 scenario sizing and tariff simplification: 300 kW office, 240 kW contract, 120 kWh/60 kW BESS, 60 kWp PV, HT-Small connection assumption, fixed 0.03 SGD/kWh adder; excludes GST.",
+    "A03": "D scenario employee parking/SoC assumptions, not fitted data: truncated-normal arrival/departure; uniform arrival SoC; reserve/goal; one weekday car per slot and no weekend cars.",
+    "A04": "D constant one-way conversion-efficiency assumptions; evidence for EV round-trip order of magnitude only.",
+    "A05": "D economic transfer assumptions: fixed SGD/USD=1.35 (not historical FX), price benchmarks transferred to the chosen assets, NMC life proxy transferred to LEAF reference; AC-throughput linear proxy, no residual/calendar-age model; 5-decimal coefficient rounding.",
+    "A06": "D PV output scaling and cost interpolation assumptions: normalise the national historical forecast to an assumed 48 kW rooftop peak; capex1200 SGD/kWp, O&M1% transferred to commercial, fixed365-day year.",
+    "A07": "D synthetic office-load shape, bounded fluctuations, weekend multiplier, reproducible random seed and six-decimal CSV output precision.",
+    "A08": "D uncalibrated relative-Gaussian prediction-noise schedule and same-day boundary padding.",
+    "A09": "D four-step arithmetic fixture and standalone edge-case inputs; deliberately synthetic, not empirical operating records.",
+    "A10": "D recommended date-disjoint 14/7/7-day training/validation/test partition; no performance conclusion claimed."
+  },
+  "data_rights_note": "EMC data were publicly downloadable without a subscription. Public access is not an assertion of an unrestricted open-data licence; consult EMC website terms for redistribution/public publication."
+}

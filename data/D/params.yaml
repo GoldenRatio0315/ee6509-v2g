@@ -1,0 +1,962 @@
+{
+  "format_note": "Valid YAML 1.2 written in its JSON subset. Every parameter is {value, unit, source, status, note}; use value for calculations. Python standard-library json can read this file.",
+  "version": "0.3",
+  "simulation": {
+    "delta_t_h": {
+      "value": 0.5,
+      "unit": "h",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Group specification: 30 minutes; power is half-hour mean AC-bus power."
+    },
+    "steps_per_day": {
+      "value": 48,
+      "unit": "step/day",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "One episode is one local calendar day."
+    },
+    "timezone": {
+      "value": "Asia/Singapore",
+      "unit": "IANA timezone",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "UTC+08:00; no daylight-saving adjustment."
+    },
+    "n_slots": {
+      "value": 5,
+      "unit": "slot",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Default experiment; use n_slots_cases for sensitivity."
+    },
+    "n_slots_cases": {
+      "value": [
+        5,
+        10
+      ],
+      "unit": "slot",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Endpoints of the authorised 5–10-slot range; intermediate integer N is also valid."
+    },
+    "history_steps": {
+      "value": 8,
+      "unit": "step",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "History includes current t: t-7,...,t."
+    },
+    "forecast_steps": {
+      "value": 12,
+      "unit": "step",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Future lead h=1,...,12; 6-hour horizon."
+    },
+    "action_min": {
+      "value": -1,
+      "unit": "dimensionless",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Per-device normalised action; affine-map into feasible interval."
+    },
+    "action_max": {
+      "value": 1,
+      "unit": "dimensionless",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Positive power charges; absent EV slots have interval [0,0]."
+    },
+    "initial_running_peak_kw": {
+      "value": 0,
+      "unit": "kW",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Reset the running IMPORT peak at local 00:00."
+    },
+    "reverse_export_allowed": {
+      "value": true,
+      "unit": "boolean",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "No hard PCC power limit is added. Contract capacity is a billing reference."
+    },
+    "supercapacitor_in_simulation": {
+      "value": false,
+      "unit": "boolean",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Qualitative report discussion only; no action, energy state or cost."
+    },
+    "bess_terminal_rule": {
+      "value": "end_ge_start",
+      "unit": "rule",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Group decision 2026-11-10 (tech plan §3.5): BESS end-of-day energy E_48 >= E_0, enforced in action projection like the EV departure bound: E_(t+1) >= E_0 - eta_ch*P_ch,max*(k-1)*dt. Still report E_48."
+    }
+  },
+  "ev": {
+    "capacity_kwh": {
+      "value": 40,
+      "unit": "kWh/vehicle",
+      "source": [
+        "S03"
+      ],
+      "status": "sourced_model_reference",
+      "note": "LEAF S nameplate reference, not a claim of 40 kWh usable capacity in a real vehicle."
+    },
+    "charge_max_kw": {
+      "value": 6,
+      "unit": "kW AC/slot",
+      "source": [
+        "S02"
+      ],
+      "status": "sourced_model_reference",
+      "note": "Indra nominal charge rating; model adopts a constant AC-side limit."
+    },
+    "discharge_max_kw": {
+      "value": 6,
+      "unit": "kW AC/slot",
+      "source": [
+        "S02"
+      ],
+      "status": "sourced_model_reference",
+      "note": "Indra nominal discharge rating; same magnitude as charge."
+    },
+    "soc_min": {
+      "value": 0.2,
+      "unit": "fraction",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "Preserved operating reserve; not a Nissan warranty condition."
+    },
+    "soc_max": {
+      "value": 0.9,
+      "unit": "fraction",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "Preserved operating ceiling."
+    },
+    "initial_soc_min": {
+      "value": 0.3,
+      "unit": "fraction",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "Independent uniform draw within [0.30,0.70] upon arrival."
+    },
+    "initial_soc_max": {
+      "value": 0.7,
+      "unit": "fraction",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "Some cars arrive above the departure target and may offer flexibility."
+    },
+    "departure_target_soc": {
+      "value": 0.65,
+      "unit": "fraction",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "User-selected minimum; 26 kWh in this model."
+    },
+    "eta_ch": {
+      "value": 0.9,
+      "unit": "dimensionless",
+      "source": [
+        "S04",
+        "A04"
+      ],
+      "status": "assumption_with_evidence",
+      "note": "0.9²=0.81 lies within the paper’s measured 0.791–0.878 round-trip range; each one-way value is an assumption."
+    },
+    "eta_dis": {
+      "value": 0.9,
+      "unit": "dimensionless",
+      "source": [
+        "S04",
+        "A04"
+      ],
+      "status": "assumption_with_evidence",
+      "note": "AC-to-stored-energy and stored-energy-to-AC lumped efficiencies."
+    },
+    "arrival_mean_h": {
+      "value": 8.5,
+      "unit": "hour local",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "08:30; continuous truncated normal before grid quantisation."
+    },
+    "arrival_sd_h": {
+      "value": 0.5,
+      "unit": "h",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "Not fitted to employee travel observations."
+    },
+    "arrival_min_h": {
+      "value": 7,
+      "unit": "hour local",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "07:00 lower truncation bound."
+    },
+    "arrival_max_h": {
+      "value": 10,
+      "unit": "hour local",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "10:00 upper truncation bound."
+    },
+    "departure_mean_h": {
+      "value": 18,
+      "unit": "hour local",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "18:00; independent of arrival before feasibility checks."
+    },
+    "departure_sd_h": {
+      "value": 0.75,
+      "unit": "h",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "45 minutes standard deviation."
+    },
+    "departure_min_h": {
+      "value": 16,
+      "unit": "hour local",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "16:00 lower truncation bound."
+    },
+    "departure_max_h": {
+      "value": 20,
+      "unit": "hour local",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "20:00 upper truncation bound."
+    },
+    "weekday_cars_per_slot": {
+      "value": 1,
+      "unit": "vehicle/slot/day",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "One car per slot on Monday–Friday; no within-day slot turnover."
+    },
+    "weekend_cars_per_slot": {
+      "value": 0,
+      "unit": "vehicle/slot/day",
+      "source": [
+        "A03"
+      ],
+      "status": "assumption",
+      "note": "Saturday/Sunday have empty slots. Public holidays are not separately modelled."
+    },
+    "pack_price_usd_per_kwh": {
+      "value": 97,
+      "unit": "USD/kWh nameplate",
+      "source": [
+        "S06"
+      ],
+      "status": "sourced_benchmark",
+      "note": "2024 global BEV pack average; not a Nissan replacement quote."
+    },
+    "cycle_life": {
+      "value": 3000,
+      "unit": "cycle at 70% DoD",
+      "source": [
+        "S07",
+        "A05"
+      ],
+      "status": "transferred_assumption",
+      "note": "PNNL Table 4.3 NMC proxy at 70% DoD; NOT measured LEAF life. Table end-of-life definition also differs from warranty claims."
+    },
+    "usable_fraction_for_wear": {
+      "value": 0.7,
+      "unit": "fraction",
+      "source": [
+        "A03"
+      ],
+      "status": "derived",
+      "note": "0.90−0.20; use 28 kWh in the wear denominator."
+    },
+    "wear_sgd_per_kwh": {
+      "value": 0.03118,
+      "unit": "SGD/kWh AC throughput",
+      "source": [
+        "S06",
+        "S07",
+        "A05"
+      ],
+      "status": "derived_rounded",
+      "note": "97×1.35×40/(3000×28×2)=0.0311785714...; rounded half-up to 5 decimal places. Apply to |P_ev|×dt exactly as specified."
+    }
+  },
+  "bess": {
+    "chemistry": {
+      "value": "LFP",
+      "unit": "chemistry",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Stationary storage reference; no particular commercial product is claimed."
+    },
+    "capacity_kwh": {
+      "value": 120,
+      "unit": "kWh nameplate",
+      "source": [
+        "A02"
+      ],
+      "status": "assumption",
+      "note": "2-hour nameplate energy-to-power ratio; chosen to match the 60 kW peak gap."
+    },
+    "charge_max_kw": {
+      "value": 60,
+      "unit": "kW AC",
+      "source": [
+        "A02"
+      ],
+      "status": "assumption",
+      "note": "Same order as 300−240 kW and the 30–60 kW EV fleet."
+    },
+    "discharge_max_kw": {
+      "value": 60,
+      "unit": "kW AC",
+      "source": [
+        "A02"
+      ],
+      "status": "assumption",
+      "note": "Symmetric PCS limit."
+    },
+    "soc_min": {
+      "value": 0.1,
+      "unit": "fraction",
+      "source": [
+        "A02"
+      ],
+      "status": "assumption",
+      "note": "12 kWh minimum stored energy."
+    },
+    "soc_max": {
+      "value": 0.9,
+      "unit": "fraction",
+      "source": [
+        "A02"
+      ],
+      "status": "assumption",
+      "note": "108 kWh maximum; usable swing is 96 kWh."
+    },
+    "initial_soc": {
+      "value": 0.5,
+      "unit": "fraction",
+      "source": [
+        "A02"
+      ],
+      "status": "assumption",
+      "note": "60 kWh at each daily reset for every strategy."
+    },
+    "eta_ch": {
+      "value": 0.95,
+      "unit": "dimensionless",
+      "source": [
+        "A04"
+      ],
+      "status": "assumption",
+      "note": "Lumped constant AC/storage efficiency; 90.25% round trip is a scenario assumption, not a measured device specification."
+    },
+    "eta_dis": {
+      "value": 0.95,
+      "unit": "dimensionless",
+      "source": [
+        "A04"
+      ],
+      "status": "assumption",
+      "note": "Losses are represented only by the energy update."
+    },
+    "pack_price_usd_per_kwh": {
+      "value": 125,
+      "unit": "USD/kWh nameplate",
+      "source": [
+        "S08"
+      ],
+      "status": "sourced_benchmark",
+      "note": "2024 stationary lithium-ion pack average in NREL chart; transferred to LFP model; excludes PCS/EPC."
+    },
+    "cycle_life": {
+      "value": 2400,
+      "unit": "cycle at 80% DoD",
+      "source": [
+        "S07"
+      ],
+      "status": "sourced_benchmark",
+      "note": "PNNL Table 4.3 LFP point estimate at 80% DoD, with stated end-of-life convention."
+    },
+    "usable_fraction_for_wear": {
+      "value": 0.8,
+      "unit": "fraction",
+      "source": [
+        "A02"
+      ],
+      "status": "derived",
+      "note": "0.90−0.10; usable capacity 96 kWh."
+    },
+    "wear_sgd_per_kwh": {
+      "value": 0.04395,
+      "unit": "SGD/kWh AC throughput",
+      "source": [
+        "S07",
+        "S08",
+        "A05"
+      ],
+      "status": "derived_rounded",
+      "note": "125×1.35×120/(2400×96×2)=0.0439453125; rounded half-up to 5 decimals; applied to |P_bess|×dt."
+    }
+  },
+  "pv": {
+    "installed_kwp": {
+      "value": 60,
+      "unit": "kWp DC",
+      "source": [
+        "A02"
+      ],
+      "status": "assumption",
+      "note": "Rooftop capacity selected below office daytime demand."
+    },
+    "ac_peak_fraction": {
+      "value": 0.8,
+      "unit": "kW AC/kWp DC",
+      "source": [
+        "A06"
+      ],
+      "status": "assumption",
+      "note": "Proxy output is 60×0.80×(EMC solar/max over the fixed 28-day calibration block). Includes all conversion/temperature/cloud shape effects; do not multiply by another inverter efficiency."
+    },
+    "emc_solar_reference_mw": {
+      "value": 1788.87,
+      "unit": "MW",
+      "source": [
+        "S01",
+        "S10"
+      ],
+      "status": "derived_from_download",
+      "note": "Maximum SOLAR(MW) across the delivered fixed block; public NATIONAL forecast, not rooftop measurement. Freeze this scale across all splits."
+    },
+    "capital_cost_sgd_per_kwp": {
+      "value": 1200,
+      "unit": "SGD/kWp",
+      "source": [
+        "S09",
+        "A06"
+      ],
+      "status": "assumption_with_evidence",
+      "note": "Interpolation within EMA’s 1000–1600 range; not a quote for a 60 kWp commercial system."
+    },
+    "life_years": {
+      "value": 20,
+      "unit": "year",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Straight-line life required by group specification."
+    },
+    "maintenance_fraction_per_year": {
+      "value": 0.01,
+      "unit": "fraction/year",
+      "source": [
+        "S09",
+        "A06"
+      ],
+      "status": "transferred_assumption",
+      "note": "Lower end of the EMA residential 1–2% benchmark, transferred to this office scenario."
+    },
+    "calendar_days_per_year": {
+      "value": 365,
+      "unit": "day/year",
+      "source": [
+        "A06"
+      ],
+      "status": "assumption",
+      "note": "Fixed non-leap annualisation convention."
+    },
+    "daily_fixed_cost_sgd": {
+      "value": 11.83561644,
+      "unit": "SGD/day",
+      "source": [
+        "S09",
+        "A06"
+      ],
+      "status": "derived_rounded",
+      "note": "(60×1200/20 + 60×1200×0.01)/365; rounded half-up to 8 decimals. Reporting only."
+    }
+  },
+  "building": {
+    "peak_load_kw": {
+      "value": 300,
+      "unit": "kW",
+      "source": [
+        "A02"
+      ],
+      "status": "assumption",
+      "note": "Design peak and cap of synthetic whole-building load, excluding EV/BESS and before subtracting PV."
+    },
+    "contract_capacity_kw": {
+      "value": 240,
+      "unit": "kW",
+      "source": [
+        "A02"
+      ],
+      "status": "assumption",
+      "note": "80% of design peak; leaves a 60 kW gap matched by BESS. Chosen scenario, not an observed supply agreement."
+    },
+    "tariff_supply_class": {
+      "value": "HT-Small",
+      "unit": "class",
+      "source": [
+        "S05",
+        "A02"
+      ],
+      "status": "assumption_with_evidence",
+      "note": "Assume an HT-connected office at 6.6/22 kV; LT tariffs do not contain the adopted capacity-charge columns."
+    },
+    "load_profile_hours": {
+      "value": [
+        0,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        12,
+        13,
+        15,
+        16,
+        17,
+        18,
+        20,
+        22,
+        24
+      ],
+      "unit": "hour local",
+      "source": [
+        "A07"
+      ],
+      "status": "assumption",
+      "note": "Piecewise-linear daily shape sampled at each half-hour midpoint."
+    },
+    "load_profile_fractions": {
+      "value": [
+        0.25,
+        0.24,
+        0.27,
+        0.4,
+        0.7,
+        0.85,
+        0.92,
+        0.9,
+        0.95,
+        1.0,
+        0.98,
+        0.85,
+        0.55,
+        0.32,
+        0.27,
+        0.25
+      ],
+      "unit": "fraction of peak",
+      "source": [
+        "A07"
+      ],
+      "status": "assumption",
+      "note": "Office opening, afternoon cooling peak and nighttime base demand; not fitted to building meter data."
+    },
+    "weekend_load_multiplier": {
+      "value": 0.55,
+      "unit": "dimensionless",
+      "source": [
+        "A07"
+      ],
+      "status": "assumption",
+      "note": "Same shape at lower occupancy; maintained cooling/base load."
+    },
+    "daily_load_fluctuation": {
+      "value": 0.05,
+      "unit": "relative half-width",
+      "source": [
+        "A07"
+      ],
+      "status": "assumption",
+      "note": "u_day~Uniform(−0.05,+0.05); held constant within each day."
+    },
+    "step_load_fluctuation": {
+      "value": 0.05,
+      "unit": "relative half-width",
+      "source": [
+        "A07"
+      ],
+      "status": "assumption",
+      "note": "u_t~Uniform(−0.05,+0.05); multiplier 1+u_day+u_t is within [0.90,1.10]. Cap result at 300 kW."
+    }
+  },
+  "tariff": {
+    "buy_adder_sgd_per_kwh": {
+      "value": 0.03,
+      "unit": "SGD/kWh",
+      "source": [
+        "A02"
+      ],
+      "status": "assumption",
+      "note": "Fixed bundled adder for network/retail/market costs. NOT the regulated retail tariff or an exact SP fee; no separate time-of-use charge is added."
+    },
+    "ucc_month_sgd_per_kw": {
+      "value": 21.32,
+      "unit": "SGD/kW/month",
+      "source": [
+        "S05"
+      ],
+      "status": "sourced_benchmark",
+      "note": "Table 9 HT-Small, EXCLUDING GST, effective 1 July 2026; pinned fee version, not a claim to be the latest tariff."
+    },
+    "contract_month_sgd_per_kw": {
+      "value": 14.21,
+      "unit": "SGD/kW/month",
+      "source": [
+        "S05"
+      ],
+      "status": "sourced_benchmark",
+      "note": "Same table/class/version; only reporting daily fixed contract cost."
+    },
+    "month_to_day_divisor": {
+      "value": 30,
+      "unit": "day/month",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Daily surrogate required by group; not a reconstruction of the actual monthly maximum-demand bill."
+    },
+    "usep_divisor": {
+      "value": 1000,
+      "unit": "kWh/MWh",
+      "source": [
+        "S01"
+      ],
+      "status": "unit_conversion",
+      "note": "Divide downloaded SGD/MWh by 1000; preserve spikes and negative prices."
+    },
+    "gst_multiplier": {
+      "value": 1,
+      "unit": "dimensionless",
+      "source": [
+        "A02"
+      ],
+      "status": "assumption",
+      "note": "All model costs exclude GST; do not mix Table 9 and GST-inclusive Table 9A."
+    }
+  },
+  "economics": {
+    "sgd_per_usd": {
+      "value": 1.35,
+      "unit": "SGD/USD",
+      "source": [
+        "A05"
+      ],
+      "status": "assumption",
+      "note": "Fixed conversion chosen for a reproducible benchmark; not a fetched exchange rate."
+    },
+    "wear_round_places": {
+      "value": 5,
+      "unit": "decimal place",
+      "source": [
+        "A05"
+      ],
+      "status": "assumption",
+      "note": "Round coefficients once using decimal ROUND_HALF_UP; never round per-step energy or costs during computation."
+    },
+    "throughput_directions_per_cycle": {
+      "value": 2,
+      "unit": "direction/cycle",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "One usable-energy charge plus one usable-energy discharge per equivalent cycle."
+    }
+  },
+  "forecast": {
+    "rule": {
+      "value": "y_hat(t,h)=y(t+h)*(1+epsilon); epsilon~Normal(0,sigma(h)^2)",
+      "unit": "rule",
+      "source": [
+        "A01",
+        "A08"
+      ],
+      "status": "assumption",
+      "note": "Relative noise in observations only; settlement and physical updates use CSV truth."
+    },
+    "usep_sigma_at_h1": {
+      "value": 0.02,
+      "unit": "relative SD",
+      "source": [
+        "A08"
+      ],
+      "status": "assumption",
+      "note": "sigma_price(h)=0.02+0.01×(h−1); retain negative forecasts."
+    },
+    "usep_sigma_increment": {
+      "value": 0.01,
+      "unit": "relative SD/lead step",
+      "source": [
+        "A08"
+      ],
+      "status": "assumption",
+      "note": "At h=12, sigma=0.13."
+    },
+    "load_sigma_at_h1": {
+      "value": 0.02,
+      "unit": "relative SD",
+      "source": [
+        "A08"
+      ],
+      "status": "assumption",
+      "note": "sigma_load(h)=0.02+0.005×(h−1); clip forecasts below 0 only."
+    },
+    "load_sigma_increment": {
+      "value": 0.005,
+      "unit": "relative SD/lead step",
+      "source": [
+        "A08"
+      ],
+      "status": "assumption",
+      "note": "At h=12, sigma=0.075."
+    },
+    "pv_sigma_at_h1": {
+      "value": 0.05,
+      "unit": "relative SD",
+      "source": [
+        "A08"
+      ],
+      "status": "assumption",
+      "note": "sigma_pv(h)=0.05+0.01×(h−1); clip forecasts into [0,60] kW."
+    },
+    "pv_sigma_increment": {
+      "value": 0.01,
+      "unit": "relative SD/lead step",
+      "source": [
+        "A08"
+      ],
+      "status": "assumption",
+      "note": "At h=12, sigma=0.16. Zero proxy PV remains zero under multiplicative noise."
+    },
+    "independence_rule": {
+      "value": "independent by seed/date/issue_t/lead/variable",
+      "unit": "rule",
+      "source": [
+        "A08"
+      ],
+      "status": "assumption",
+      "note": "Cache each issued forecast. No assumed time/variable error correlation; these are stress-test settings, not calibrated forecast accuracy."
+    },
+    "episode_end_padding": {
+      "value": "hold_last_in_episode",
+      "unit": "rule",
+      "source": [
+        "A08"
+      ],
+      "status": "assumption",
+      "note": "Beyond t=47 repeat the last in-day truth before applying lead noise. Do not access validation/test days through forecast padding."
+    },
+    "episode_start_history_padding": {
+      "value": "repeat_first_in_episode",
+      "unit": "rule",
+      "source": [
+        "A08"
+      ],
+      "status": "assumption",
+      "note": "Before t=0 repeat t=0; history t-7,...,t contains no later truth."
+    }
+  },
+  "data": {
+    "first_date": {
+      "value": "2026-10-01",
+      "unit": "date local",
+      "source": [
+        "S01"
+      ],
+      "status": "download_selection",
+      "note": "First complete final-price day selected."
+    },
+    "last_date": {
+      "value": "2026-10-28",
+      "unit": "date local",
+      "source": [
+        "S01"
+      ],
+      "status": "download_selection",
+      "note": "Inclusive; four consecutive calendar weeks, 1344 half-hours."
+    },
+    "timeseries_seed": {
+      "value": 20261110,
+      "unit": "integer seed",
+      "source": [
+        "A07"
+      ],
+      "status": "assumption",
+      "note": "Python random.Random(seed+day_offset); used only for the synthetic load."
+    },
+    "power_decimal_places": {
+      "value": 6,
+      "unit": "decimal place",
+      "source": [
+        "A07"
+      ],
+      "status": "assumption",
+      "note": "CSV load/PV precision; price conversion remains exact decimal."
+    },
+    "train_last_date": {
+      "value": "2026-10-14",
+      "unit": "date local",
+      "source": [
+        "A10"
+      ],
+      "status": "assumption",
+      "note": "Recommended chronological split: first 14 days train."
+    },
+    "validation_last_date": {
+      "value": "2026-10-21",
+      "unit": "date local",
+      "source": [
+        "A10"
+      ],
+      "status": "assumption",
+      "note": "Next 7 days validation; remaining 7 test. Fit any learned normaliser on training only."
+    },
+    "train_ev_noise_seeds": {
+      "value": [
+        0,
+        99
+      ],
+      "unit": "inclusive integer seed range",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Reuse group seed convention within the training dates."
+    },
+    "test_ev_noise_seeds": {
+      "value": [
+        100,
+        119
+      ],
+      "unit": "inclusive integer seed range",
+      "source": [
+        "A01"
+      ],
+      "status": "fixed",
+      "note": "Held-out EV/forecast seeds as well as held-out price dates."
+    }
+  },
+  "hand_case": {
+    "n_cars": {
+      "value": 1,
+      "unit": "vehicle",
+      "source": [
+        "A09"
+      ],
+      "status": "assumption",
+      "note": "Four-row arithmetic fixture treated as a complete day (BESS end-of-day rule applies at step 4); not the main N=5 experiment."
+    },
+    "steps": {
+      "value": 4,
+      "unit": "step",
+      "source": [
+        "A09"
+      ],
+      "status": "assumption",
+      "note": "Dedicated four-step stay; default daily episode remains 48 steps."
+    },
+    "ev_initial_kwh": {
+      "value": 24.8,
+      "unit": "kWh",
+      "source": [
+        "A09"
+      ],
+      "status": "assumption",
+      "note": "Initial EV energy selected to make the last step charge at 6 kW."
+    },
+    "bess_initial_kwh": {
+      "value": 60,
+      "unit": "kWh",
+      "source": [
+        "A09"
+      ],
+      "status": "assumption",
+      "note": "Same as daily BESS reset; the fixture must end at >= 60 kWh."
+    },
+    "initial_running_peak_kw": {
+      "value": 0,
+      "unit": "kW",
+      "source": [
+        "A09"
+      ],
+      "status": "assumption",
+      "note": "Miniature fixture starts without a prior peak."
+    }
+  }
+}

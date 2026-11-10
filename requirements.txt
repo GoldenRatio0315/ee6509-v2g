@@ -1,0 +1,6 @@
+numpy
+pandas
+matplotlib
+gymnasium
+# B：torch
+# C：MILP 求解器自选，例如 pulp 或 cvxpy + highspy

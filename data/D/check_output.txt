@@ -1,0 +1,13 @@
+PASS: parameter units, registered sources/assumptions, 48 half-hours and 12-step horizon
+PASS: separate wear derivations/rounding, PV 11.83561644 SGD/day, fixed contract 113.68 SGD/day
+PASS: all 4 hand-case rows, including feasible intervals, energy, import/export, peak and both wear terms
+HAND CASE: total=96.10157925 SGD; EV=26 kWh; BESS=60 kWh (end-of-day rule met); peak=252 kW
+PASS: upper-SoC projection reaches exactly 36/108 kWh; charging at ceiling and discharge at floor blocked
+PASS: imminent departure forces charge; tight interval [6,6]; unreachable input rejected; empty-slot power zero
+PASS: BESS end-of-day rule forces 40 kW at k=1 from 41 kWh; unreachable end-of-day target rejected
+PASS: a new 270 kW peak adds 1066/75 SGD; repeated/lower peaks and export add zero
+PASS: negative USEP signs retained for both import and export
+PASS: 28 CSVs / 1344 source-matched prices, timestamps, exact offline rebuild and declared provenance
+PASS: scale PV peak=48 < noon load min=139.064597 kW; BESS/gap=60/60; EV/BESS=0.5–1
+PASS: all permitted arrival/SoC draws are charge-feasible; prediction SD increases over 12 leads; 14/7/7 split
+ALL CHECKS PASSED — D reference/data only; A environment, SAC and C MILP remain integration work.

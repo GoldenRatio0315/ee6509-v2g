@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# 虚拟环境与本地配置
+.venv/
+venv/
+env.local/
+.env
+.env.*
+
+# IDE / 系统文件
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 运行输出：结果、日志、训练记录（只保留目录占位）
+results/*
+!results/.gitkeep
+runs/
+logs/
+wandb/
+*.log
+
+# 模型权重与大文件（训练好的模型放共享网盘，不进仓库）
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.npz
+*.zip
+*.tgz
