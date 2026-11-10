@@ -2,7 +2,7 @@
 
 用 SAC 强化学习，按 30 min 步长调度楼宇固定储能（BESS）和 5–10 辆 V2G 电动车，使全天运行总成本最低，同时保证每辆车离场时达到目标电量。
 
-**技术方案**（以在线文档为准）：<https://claude.ai/artifact/KeCSxpz4FCjPWHAhVHMVxy>
+
 
 ## 目录与负责人
 
